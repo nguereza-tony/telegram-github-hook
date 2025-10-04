@@ -2,14 +2,14 @@
 **This library is used to notify telegram chat on Github Webhook for push event**
 
 [![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
-[![Latest Stable Version](https://poser.pugx.org/platine-php/cache/v)](https://packagist.org/packages/platine-php/cache)
-[![Latest Unstable Version](https://poser.pugx.org/platine-php/cache/v/unstable)](https://packagist.org/packages/platine-php/cache)
-[![Total Downloads](https://poser.pugx.org/platine-php/cache/downloads)](https://packagist.org/packages/platine-php/cache)
-[![License](https://poser.pugx.org/platine-php/cache/license)](https://packagist.org/packages/platine-php/cache)  
-![Tests](https://github.com/platine-php/cache/actions/workflows/ci.yml/badge.svg)
-[![Quality Score](https://img.shields.io/scrutinizer/g/platine-php/cache.svg?style=flat-square)](https://scrutinizer-ci.com/g/platine-php/cache)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5968a4360b2e45db92cd38bce4ce7a4a)](https://app.codacy.com/gh/platine-php/cache/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/5968a4360b2e45db92cd38bce4ce7a4a)](https://app.codacy.com/gh/platine-php/cache/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+[![Latest Stable Version](https://poser.pugx.org/nguereza-tony/telegram-github-hook/v)](https://packagist.org/packages/nguereza-tony/telegram-github-hook)
+[![Latest Unstable Version](https://poser.pugx.org/nguereza-tony/telegram-github-hook/v/unstable)](https://packagist.org/packages/nguereza-tony/telegram-github-hook)
+[![Total Downloads](https://poser.pugx.org/nguereza-tony/telegram-github-hook/downloads)](https://packagist.org/packages/nguereza-tony/telegram-github-hook)
+[![License](https://poser.pugx.org/nguereza-tony/telegram-github-hook/license)](https://packagist.org/packages/nguereza-tony/telegram-github-hook)  
+![Tests](https://github.com/nguereza-tony/telegram-github-hook/actions/workflows/ci.yml/badge.svg)
+[![Quality Score](https://img.shields.io/scrutinizer/g/nguereza-tony/telegram-github-hook.svg?style=flat-square)](https://scrutinizer-ci.com/g/nguereza-tony/telegram-github-hook)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7bbc17c8aff1430c8a52a84ba7ff2787)](https://app.codacy.com/gh/nguereza-tony/telegram-github-hook/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/7bbc17c8aff1430c8a52a84ba7ff2787)](https://app.codacy.com/gh/nguereza-tony/telegram-github-hook/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 
 ### Requirements 
 - **PHP >= 8.0** 
@@ -17,7 +17,7 @@
 ### Installation
 #### Using composer (recommended)
 ```bash
-composer require platine-php/cache
+composer require nguereza-tony/telegram-github-hook
 ```
 
 ### License

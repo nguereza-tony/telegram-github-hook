@@ -1,0 +1,61 @@
+{
+    "name": "nguereza-tony/telegram-github-hook",
+    "description": "This library is used to notify telegram chat on Github Webhook for push even",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["application", "website", "development", "framework", "php", "platine", "hook", "telegram", "github"],
+    "authors": [
+        {
+            "name": "NGUEREZA Tony",
+            "email": "nguerezatony@gmail.com",
+            "homepage": "https://www.platine-php.com",
+            "role": "developer"
+        }
+    ],
+
+    "support": {
+        "issues": "https://github.com/nguereza-tony/telegram-github-hook/issues",
+        "source": "https://github.com/nguereza-tony/telegram-github-hook"
+    },
+	
+    "require": {
+        "php": "^8",
+        "platine-php/config": "^2.0",
+        "platine-php/http": "^2.0"
+    },
+	
+    "require-dev": {
+        "phpmd/phpmd": "@stable",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^9.6",
+        "platine-php/dev": "^2.0",
+        "squizlabs/php_codesniffer": "3.*"
+    },
+    
+    "autoload": {
+        "psr-4":{
+            "Quantum\\Hub\\": "src/"
+        }
+    },
+    
+    "autoload-dev": {
+        "psr-4":{
+            "Quantum\\Test\\": "tests"
+        }
+    },
+    
+    "config": {
+        "sort-packages": true
+    },
+
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "static": "phpstan analyze",
+        "check": "phpcs",
+        "check-fix": "phpcbf",
+        "analyze": "phpmd src xml phpmd.xml"
+    },
+	
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

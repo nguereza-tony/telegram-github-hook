@@ -1,6 +1,6 @@
 {
     "name": "nguereza-tony/telegram-github-hook",
-    "description": "This library is used to notify telegram chat on Github Webhook for push even",
+    "description": "This library is used to notify telegram chat on Github Webhook for push event",
     "type": "library",
     "license": "MIT",
     "keywords": ["application", "website", "development", "framework", "php", "platine", "hook", "telegram", "github"],

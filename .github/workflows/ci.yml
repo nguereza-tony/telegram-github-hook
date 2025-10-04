@@ -44,6 +44,6 @@ jobs:
     - name: Upload coverage to Codacy
       uses: codacy/codacy-coverage-reporter-action@v1
       with:
-          api-token: ${{ secrets.CODACY_API_TOKEN }}
+          project-token: ${{ secrets.CODACY_API_TOKEN }}
           coverage-reports: clover.xml
           

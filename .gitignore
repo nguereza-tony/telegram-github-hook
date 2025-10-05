@@ -5,5 +5,3 @@ nbproject
 .phpunit.result.cache
 .php_cs.cache
 *.sh
-config.php
-index.php

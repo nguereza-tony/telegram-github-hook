@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Quantum\Hub;
 
+use DateTime;
+use Exception;
 use Platine\Config\Config;
+use Platine\Http\Client\HttpClient;
 use Platine\Http\ServerRequest;
 use Platine\Http\ServerRequestInterface;
 use Platine\Stdlib\Helper\Arr;
@@ -70,9 +73,8 @@ class WebHook
             return;
         }
 
-        $message = $this->getMessageContent($commit, $repository);
-
-        echo $message;
+        // Now send the message
+        $this->sendMessage($commit, $repository);
     }
 
     /**
@@ -117,7 +119,7 @@ class WebHook
      */
     public function getRepository(): Repository
     {
-        $data = $this->getPayloadValue('repository');
+        $data = $this->getPayloadValue('repository', []);
 
         return new Repository($data);
     }
@@ -128,7 +130,7 @@ class WebHook
      */
     public function getSender(): Sender
     {
-        $data = $this->getPayloadValue('sender');
+        $data = $this->getPayloadValue('sender', []);
 
         return new Sender($data);
     }
@@ -148,21 +150,6 @@ class WebHook
     }
 
     /**
-     * Return the list of repository that is disabled
-     * @return array<string>
-     */
-    public function getDisabledRepositories(): array
-    {
-        $params = $this->request->getQueryParams();
-        $repositories = $params['disable_repos'] ?? '';
-        if (empty($repositories)) {
-            return [];
-        }
-
-        return explode(',', $repositories);
-    }
-
-    /**
      * Get message content
      * @param Commit $commit
      * @param Repository $repository
@@ -175,7 +162,7 @@ class WebHook
         $sender = $this->getSender();
 
         $text = sprintf(
-            "<a href = \"%s\"><b>@%s</b></a> just push new commit on <a href = \"%s\"><b>%s</b></a>%s%s",
+            "<a href = \"%s\"><b>@%s</b></a> just push to repository <a href = \"%s\"><b>%s</b></a>%s%s",
             $sender->getHtmlUrl(),
             $sender->getLogin(),
             $repository->getHtmlUrl(),
@@ -184,9 +171,11 @@ class WebHook
             PHP_EOL
         );
 
+        $date = new DateTime($commit->getTimestamp());
+
         $text .= $this->buildMessageRow('Description', $commit->getMessage(), 2);
+        $text .= $this->buildMessageRow('Date', $date->format('Y-m-d H:i:s'));
         $text .= $this->buildMessageRow('Branch/Tag', $this->getBranch());
-        $text .= $this->buildMessageRow('Date', $commit->getTimestamp());
         $text .= $this->buildMessageRow(
             'Commit ID',
             sprintf(
@@ -202,6 +191,21 @@ class WebHook
 
 
         return $text;
+    }
+
+    /**
+     * Return the list of repository that is disabled
+     * @return array<string>
+     */
+    protected function getDisabledRepositories(): array
+    {
+        $params = $this->request->getQueryParams();
+        $repositories = $params['disable_repos'] ?? '';
+        if (empty($repositories)) {
+            return [];
+        }
+
+        return explode(',', $repositories);
     }
 
     /**
@@ -255,5 +259,89 @@ class WebHook
             $value,
             Str::repeat(PHP_EOL, $eolCount)
         );
+    }
+
+    /**
+     * Return the chat id and bot token to be used
+     * @param Repository $repository
+     * @return array{chat:string, token:string}|null
+     */
+    protected function getConfigInfo(Repository $repository): ?array
+    {
+        $organization = $repository->getOrganization();
+        $repoName = $repository->getName();
+        $configKey = 'config.organization.%s.%s';
+
+        // Check for one repository configuration
+        $repoConfig = $this->config->get(
+            sprintf($configKey, $organization, $repoName),
+            []
+        );
+        if (count($repoConfig) === 2) {
+            return [
+                'chat' => $repoConfig[0],
+                'token' => $repoConfig[1],
+            ];
+        }
+
+        // Default
+        $allConfig = $this->config->get(
+            sprintf($configKey, $organization, '*'),
+            []
+        );
+        if (count($allConfig) === 2) {
+            return [
+                'chat' => $allConfig[0],
+                'token' => $allConfig[1],
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * Send the message
+     * @param Commit $commit
+     * @param Repository $repository
+     * @return bool
+     */
+    protected function sendMessage(
+        Commit $commit,
+        Repository $repository
+    ): bool {
+        $config = $this->getConfigInfo($repository);
+        if ($config === null) {
+            return false;
+        }
+
+        $message = $this->getMessageContent($commit, $repository);
+        if (empty($message)) {
+            return false;
+        }
+
+        $url = sprintf('https://api.telegram.org/bot%s/sendMessage', $config['token']);
+        $params = [
+            'chat_id' => $config['chat'],
+            'parse_mode' => 'HTML',
+            'text' => $message,
+        ];
+
+        $client = new HttpClient($url);
+        $client->json()
+               ->verifySslCertificate(false);
+        try {
+            $response = $client->post('', $params);
+
+            if ($response->isError()) {
+                error_log($response->getError());
+
+                return false;
+            }
+
+            return true;
+        } catch (Exception $ex) {
+            error_log($ex->getMessage());
+            return false;
+        }
     }
 }

@@ -50,7 +50,7 @@ composer require nguereza-tony/telegram-github-hook
     - **Active**: Ensure the "Active" checkbox is selected to enable the webhook immediately after creation.
 - Click the Add webhook button to save your configuration.
 
-4. **Create the application**
+4. **Create the application**  
 To deploy the application you need to create the configuration file in root or sub folder of your project like:  
 ```php
 <?php
@@ -72,6 +72,7 @@ return [
 **Note**: the configuration file name should be `config.php` in order to work.  
 Now create your main file like `index.php`:
 ```php
+<?php
 require 'vendor/autoload.php';
 
 use Platine\Config\Config;
